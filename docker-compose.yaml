@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  api:
+    image: api:latest
+    hostname: api
+    build:
+      target: builder
+    ports:
+      - "8080:8080"
+    command: ["make","dev"]
+    volumes:
+      - ./:/app
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "localhost:8080/health"]
+      interval: 4s
+      timeout: 5s
+      retries: 5
+
+  database:
+    image: postgres:alpine
+    hostname: postgres
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "myuser", "-d", "mydb", "-h", "localhost", "-p", "5432"]
+      interval: 4s
+      timeout: 5s
+      retries: 5

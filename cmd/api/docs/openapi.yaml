@@ -1,0 +1,14 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Simple example API
+  description: An API to illustrate Swagger
+
+paths:
+
+  /health:
+    get:
+      description: Health route
+      responses:
+        '200':
+          description: Successful response 
