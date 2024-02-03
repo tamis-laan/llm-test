@@ -1,7 +1,10 @@
 # .PHONY: dev load build postgres createdb dropdb psql
 
-dev:
+dev-api:
 	fd -e go -e yaml -e html | entr -nrc go run  cmd/api/main.go --migrate
+
+dev-etl:
+	fd -e go -e yaml -e html | entr -nrc go run  cmd/etl/main.go --migrate
 
 build:
 	go mod tidy
@@ -15,5 +18,8 @@ load: build
 psql:
 	docker compose exec database psql -U myuser -d mydb
 
-shell:
+api-shell:
 	docker compose exec -it api /bin/sh
+
+etl-shell:
+	docker compose exec -it etl /bin/sh

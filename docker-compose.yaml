@@ -5,10 +5,11 @@ services:
     image: api:latest
     hostname: api
     build:
+      dockerfile: Dockerfile-api
       target: builder
     ports:
       - "8080:8080"
-    command: ["make","dev"]
+    command: ["make","dev-api"]
     volumes:
       - ./:/app
     depends_on:
@@ -23,6 +24,8 @@ services:
 
   database:
     image: postgres:alpine
+    build:
+      dockerfile: Dockerfile-postgres
     hostname: postgres
     environment:
       POSTGRES_DB: mydb
@@ -31,7 +34,7 @@ services:
     ports:
       - "5432:5432"
     tmpfs:
-      - /var/lib/postgresql/data
+      - /var/lib/postgresql/data # Disable persistence
     restart: always
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "myuser", "-d", "mydb", "-h", "localhost", "-p", "5432"]

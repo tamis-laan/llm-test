@@ -1,8 +1,15 @@
-# llm-test
+# Chat analyzer
 
-General large language model architecture setup.
+Analyze historical chat conversations. Makes use of large language model for question and answering.
 
-How to run:
+## Usage
+
+Build docker containers:
+``` bash
+docker compose build
+```
+
+Run system:
 ``` bash
 docker compose up
 ```
