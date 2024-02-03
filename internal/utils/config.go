@@ -11,6 +11,7 @@ type Config struct {
 	Server struct {
 		Port uint `mapstructure:"port"`
 	} `mapstructure:"server"`
+
 	Postgres struct {
 		Host     string `mapstructure:"host"`
 		Port     uint   `mapstructure:"port"`
@@ -19,32 +20,12 @@ type Config struct {
 		Database string `mapstructure:"database"`
 		Options  string `mapstructure:"options"`
 	} `mapstructure:"postgres"`
+
 	Migrations string `mapstructure:"migrations"`
-	Rabbit     struct {
-		Host     string `mapstructure:"host"`
-		Port     uint   `mapstructure:"port"`
-		Username string `mapstructure:"username"`
-		Password string `mapstructure:"password"`
-	} `mapstructure:"rabbit"`
-	Auth0 struct {
-		Issuer  string `mapstructure:"issuer"`
-		Backend struct {
-			ClientID string `mapstructure:"clientid"`
-		} `mapstructure:"backend"`
-		Management struct {
-			ClientID     string `mapstructure:"clientid"`
-			ClientSecret string `mapstructure:"clientsecret"`
-			Audience     string `mapstructure:"audience"`
-		} `mapstructure:"management"`
-	} `mapstructure:"auth0"`
-	Keycloak struct {
-		BasePath     string `mapstructure:"basepath"`
-		realm        string `mapstructure:"realm"`
-		Username     string `mapstructure:"username"`
-		Password     string `mapstructure:"password"`
-		ClientID     string `mapstructure:"clientid"`
-		ClientSecret string `mapstructure:"clientsecret"`
-	} `mapstructure:"keycloak"`
+
+	OpenAI struct {
+		Key string `mapstructure:"key"`
+	} `mapstructure:"openai"`
 }
 
 // Set default values
@@ -57,6 +38,7 @@ func setDefaultValues() {
 	viper.SetDefault("postgres.password", "mypassword")
 	viper.SetDefault("postgres.options", "sslmode=disable")
 	viper.SetDefault("migrations", "file://migrations")
+	viper.SetDefault("openai.key", "secret")
 }
 
 // Singleton config

@@ -1,17 +1,16 @@
-
 --
 -- Enable extensions
 --
-CREATE EXTENSION vector;
+CREATE EXTENSION IF NOT EXISTS vector;
 
 
 --
--- Users
+-- Actors
 --
-CREATE TABLE users(
+CREATE TABLE actors(
 	id SERIAL PRIMARY KEY,
-	username VARCHAR(64) NOT NULL,
-	embedding vector(1024) NOT NULL
+	name VARCHAR(64) NOT NULL,
+	embedding vector(1024)
 );
 
 
@@ -20,8 +19,9 @@ CREATE TABLE users(
 --
 CREATE TABLE conversations(
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(64) NOT NULL,
-	embedding vector(1024) NOT NULL
+	title VARCHAR(64) NOT NULL,
+	description VARCHAR(64) NOT NULL,
+	embedding vector(1024)
 );
 
 
@@ -31,8 +31,8 @@ CREATE TABLE conversations(
 CREATE TABLE lines (
 	id SERIAL PRIMARY KEY,
 	conversation_id INT REFERENCES conversations(id) NOT NULL,
-	user_id INT REFERENCES users(id) NOT NULL,
+	actor_id INT REFERENCES actors(id) NOT NULL,
 	stamp TIMESTAMP NOT NULL,
 	content TEXT NOT NULL,
-	embedding vector(1024) NOT NULL
+	embedding vector(1024)
 );

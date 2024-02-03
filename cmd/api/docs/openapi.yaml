@@ -12,3 +12,36 @@ paths:
       responses:
         '200':
           description: Successful response 
+
+  /conversation:
+    get:
+      description: Get information about a conversation
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: number
+          description: Get conversation by id
+      responses:
+        '200':
+          description: Successful response 
+    post:
+      description: Add a new conversation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title associated with the conversation
+                description:
+                  type: string
+                  description: The description associated with the conversation
+              required:
+                - name
+      responses:
+        '200':
+          description: Successful response 

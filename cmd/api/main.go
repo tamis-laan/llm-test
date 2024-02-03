@@ -96,7 +96,7 @@ func main() {
 	app.Use(compress.New())
 
 	// Set the LLM routes
-	routes.SetRouteLLM(app.Group("/llm"))
+	routes.SetRouteConversation(app.Group("/"))
 
 	// Health route
 	app.Get("/health", func(c *fiber.Ctx) error {
