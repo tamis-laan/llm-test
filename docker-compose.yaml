@@ -1,18 +1,32 @@
 version: '3'
 
 services:
+
+  lm:
+    image: lm:latest
+    hostname: lm
+    build:
+      context: ./lm/
+      dockerfile: lm.Dockerfile
+    ports:
+      - "3030:8080"
+    volumes:
+      - ./lm:/app:ro
+    command: sh -c "find . -name '*.py' | entr -nrc uvicorn main:app --host 0.0.0.0 --port 8080"
+    restart: always
+
   api:
     image: api:latest
     hostname: api
     build:
-      dockerfile: Dockerfile-api
+      dockerfile: api.Dockerfile
       target: builder
     ports:
       - "8080:8080"
     env_file:
       - .env
     volumes:
-      - ./:/app
+      - ./:/app:ro
     depends_on:
       database:
         condition: service_healthy
@@ -27,7 +41,7 @@ services:
   database:
     image: postgres:alpine
     build:
-      dockerfile: Dockerfile-postgres
+      dockerfile: postgres.Dockerfile
     hostname: postgres
     environment:
       POSTGRES_DB: mydb

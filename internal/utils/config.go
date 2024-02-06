@@ -22,8 +22,7 @@ type Config struct {
 	} `mapstructure:"postgres"`
 
 	Migrations string `mapstructure:"migrations"`
-
-	OpenAI struct {
+	OpenAI     struct {
 		Key string `mapstructure:"key"`
 	} `mapstructure:"openai"`
 }
@@ -75,7 +74,7 @@ func init() {
 	}
 
 	// Print configuration
-	// fmt.Println(PrettyJSON(config))
+	// log.Println(PrettyJSON(config))
 }
 
 // Get the config singleton

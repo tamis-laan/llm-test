@@ -21,5 +21,5 @@ psql:
 api-shell:
 	docker compose exec -it api /bin/sh
 
-etl-shell:
-	docker compose exec -it etl /bin/sh
+llm-shell:
+	docker compose exec -it llm /bin/sh
