@@ -2,16 +2,16 @@ version: '3'
 
 services:
 
-  lm:
-    image: lm:latest
-    hostname: lm
+  llm:
+    image: llm:latest
+    hostname: llm
     build:
-      context: ./lm/
-      dockerfile: lm.Dockerfile
+      context: ./llm/
+      dockerfile: llm.Dockerfile
     ports:
       - "3030:8080"
     volumes:
-      - ./lm:/app:ro
+      - ./llm:/app:ro
     command: sh -c "find . -name '*.py' | entr -nrc uvicorn main:app --host 0.0.0.0 --port 8080"
     restart: always
 

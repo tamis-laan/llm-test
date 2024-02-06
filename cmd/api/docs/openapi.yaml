@@ -21,6 +21,7 @@ paths:
           name: id
           schema:
             type: number
+          default: 1
           description: Get conversation by id
       responses:
         '200':
@@ -42,6 +43,20 @@ paths:
                   description: The description associated with the conversation
               required:
                 - name
+      responses:
+        '200':
+          description: Successful response 
+
+  /query:
+    get:
+      description: Query a conversation
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          default: Football match
+          description: Query text
       responses:
         '200':
           description: Successful response 

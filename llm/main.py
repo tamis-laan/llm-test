@@ -21,7 +21,9 @@ model = AutoModel.from_pretrained(model_name)
 @app.get("/config")
 async def get_model_config():
     # Get the configuration of the model
-    return model.config.__dict__
+    config = model.config.__dict__.copy()
+    config["model_name"] = model_name
+    return config
 
 # Route for embedding text
 @app.post("/embed")
@@ -33,7 +35,6 @@ async def embed_text(text_to_embed: List[str]) -> List[List[float]]:
         with torch.no_grad():
             output = model(input_ids)
         embeddings.append(output.last_hidden_state.mean(dim=1).numpy().flatten().tolist())
-    print(embeddings)
     return embeddings
 
 # Main loop

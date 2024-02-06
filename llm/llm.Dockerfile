@@ -3,7 +3,6 @@ FROM python:slim
 
 # Set environment variables for FastAPI
 ENV APP_HOME /app
-ENV MODEL_NAME bert-base-uncased
 
 # Set the working directory
 WORKDIR $APP_HOME
@@ -25,6 +24,9 @@ RUN pip install transformers
 
 # Install fastapi
 RUN pip install uvicorn fastapi
+
+# Set the model
+ENV MODEL_NAME roberta-base
 
 # Download the model and tokenizer during the Docker image build
 RUN python -c "from transformers import AutoTokenizer, AutoModel; \

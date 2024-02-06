@@ -7,6 +7,7 @@ import (
 	"llm/internal/clients"
 	"llm/internal/models"
 	"llm/internal/utils"
+	"log"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -87,13 +88,19 @@ func SetRouteConversation(router fiber.Router) {
 
 		// Create embedding template
 		template := fmt.Sprintf(
-			`conversation:{title:"%s",description:"%s"}`,
+			// `conversation:{title:"%s",description:"%s"}`,
+			`"%s" "%s"`,
 			request.Title,
 			request.Description,
 		)
 
 		// Create embedding
-		embedding := utils.Embed(template)
+		embedding, err := utils.Embed(template)
+
+		// Error check
+		if err != nil {
+			return err
+		}
 
 		// Add conversation to database
 		rows, err := pool.Query(context.Background(), `
@@ -125,6 +132,55 @@ func SetRouteConversation(router fiber.Router) {
 
 		// Return the result
 		return c.JSON(responses[0])
+	})
+
+	////////////////////////// /query.get
+	router.Get("/query", func(c *fiber.Ctx) error {
+
+		// Get id parameter
+		query := c.Query("q")
+
+		log.Println(query)
+
+		// Embed the query
+		queryEmbedding, err := utils.Embed(query)
+
+		// Error check
+		if err != nil {
+			return err
+		}
+
+		log.Println(queryEmbedding.Slice()[0])
+
+		// Similarity search
+		rows, err := pool.Query(context.Background(), `
+			SELECT (embedding <-> $1) AS score, * FROM conversations ORDER BY score`,
+			queryEmbedding,
+		)
+
+		// Release connection
+		defer rows.Close()
+
+		// Error check
+		if err != nil {
+			return err
+		}
+
+		type Output struct {
+			models.Conversation
+			Score float64 `db:"score"`
+		}
+
+		// Collect results
+		responses, err := pgx.CollectRows(rows, pgx.RowToStructByName[Output])
+
+		// Error check
+		if err != nil {
+			return err
+		}
+
+		// Return found
+		return c.JSON(responses)
 	})
 
 }

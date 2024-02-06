@@ -3,9 +3,6 @@
 dev-api:
 	fd -e go -e yaml -e html | entr -nrc go run  cmd/api/main.go --migrate
 
-dev-etl:
-	fd -e go -e yaml -e html | entr -nrc go run  cmd/etl/main.go --migrate
-
 build:
 	go mod tidy
 	docker build -t api:latest --target deployment . 

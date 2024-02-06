@@ -10,7 +10,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 CREATE TABLE actors(
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(64) NOT NULL,
-	embedding vector(1024)
+	embedding vector(768)
 );
 
 
@@ -21,7 +21,7 @@ CREATE TABLE conversations(
 	id SERIAL PRIMARY KEY,
 	title VARCHAR(64) NOT NULL,
 	description VARCHAR(64) NOT NULL,
-	embedding vector(1024)
+	embedding vector(768)
 );
 
 
@@ -34,5 +34,5 @@ CREATE TABLE lines (
 	actor_id INT REFERENCES actors(id) NOT NULL,
 	stamp TIMESTAMP NOT NULL,
 	content TEXT NOT NULL,
-	embedding vector(1024)
+	embedding vector(768)
 );
